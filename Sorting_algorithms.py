@@ -51,7 +51,6 @@ class Sort:
         return Sort.merge(left_subarray, right_subarray)  # n-1 times, I think
 
 
-
 if __name__ == '__main__':
     sort = Sort()
     ls = [1, 4, 6, 2, -1, 8, 7, -2]

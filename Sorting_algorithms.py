@@ -33,6 +33,23 @@ class Sort:
                 i = j
                 j -= 1
         return array
+    @staticmethod
+    def merge(left, right):
+        left.extend(right)
+        merged = sorted(left)
+        # print(merged)
+        return merged
+
+    @staticmethod
+    def merge_sort(array):
+        if len(array) == 1:
+            return [array[0]]   # only once
+        mid = len(array) // 2   # will be called as many times as merge_sort is called
+        left_subarray = Sort.merge_sort(array[:mid])  # n/2 - 1 times
+        right_subarray = Sort.merge_sort(array[mid:]) # n/2 - 1 times
+        # print(f'merging {left_subarray} with {right_subarray}')
+        return Sort.merge(left_subarray, right_subarray)  # n-1 times, I think
+
 
 
 if __name__ == '__main__':
@@ -41,3 +58,4 @@ if __name__ == '__main__':
     print('Bubble:', sort.bubble_sort(ls))
     print('Selection:', sort.selection_sort(ls))
     print('Insertion:', sort.insertion_sort(ls))
+    print('Merge:', sort.merge_sort(ls))

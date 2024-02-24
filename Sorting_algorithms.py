@@ -50,6 +50,31 @@ class Sort:
         # print(f'merging {left_subarray} with {right_subarray}')
         return Sort.merge(left_subarray, right_subarray)  # n-1 times, I think
 
+    @staticmethod
+    def counting_sort(nums):
+        nums_range = max(nums) - min(nums)
+        num_counts = (nums_range + 1) * [0]
+        sorted_nums = len(nums) * [0]
+        min_elem = min(nums)
+        for num in nums:
+            num_counts[num - min_elem] += 1
+        # print(num_counts)
+        # print(sorted_nums)
+        num_indices = (len(num_counts) + 1) * [0]
+        for i in range(len(num_counts)):
+            num_indices[i + 1] = num_counts[i] + num_indices[i]
+        # print(num_indices)
+        index = 0
+        tmp = 0
+        for n in num_indices[1:]:
+            for i in range(tmp, nums_range + 1):
+                while index < n:
+                    sorted_nums[index] = i + min_elem
+                    index += 1
+                tmp = i + 1
+                break
+        return sorted_nums
+
 
 if __name__ == '__main__':
     sort = Sort()

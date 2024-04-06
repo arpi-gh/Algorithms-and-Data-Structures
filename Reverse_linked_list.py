@@ -6,6 +6,8 @@ class ListNode:
     def __repr__(self):
         return f'{self.val}'
 def reverse_list(head: ListNode) -> ListNode:
+    if head is None:
+        return
     null = ListNode(0)
     null.next = head
     prev_head = current = head

@@ -1,3 +1,10 @@
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+    def __repr__(self):
+        return f'{self.val}'
 def reverse_list(head: ListNode) -> ListNode:
     null = ListNode(0)
     null.next = head

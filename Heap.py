@@ -31,12 +31,12 @@ class Heap(ABC):
     def pop(self):
         self.arr[0], self.arr[self.size-1] = self.arr[self.size-1], self.arr[0]
         self.size -= 1
-        self.build()
+        self.heapify(self.arr, 0)
 
     def push(self, value):
         self.arr.insert(self.size, value)
         self.size += 1
-        self.build()
+        self.heapify(self.arr, 0)
 
     def __repr__(self):
         return f'{self.arr[:self.size]}'

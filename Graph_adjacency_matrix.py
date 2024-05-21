@@ -41,8 +41,15 @@ class Graph:
             return True
         return False
 
-    def dfs(self):
-        ...
+    def dfs(self, index=0):
+        if self.__visited[index]:
+            return
+        self.__visited[index] = True
+        # print(self.vertexes[index])
+        for i in range(len(self.a_matrix)):
+            if self.a_matrix[index][i] and not self.__visited[i]:
+                self.dfs(i)
+        print(self.vertexes[index])
 
     def bfs(self):
         self.q.append(self.vertexes[0])
@@ -93,4 +100,5 @@ if __name__ == '__main__':
         print(v)
     for row in g.a_matrix:
         print(row)
-    g.bfs()
+    # g.bfs()
+    g.dfs()

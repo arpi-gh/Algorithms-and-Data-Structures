@@ -34,8 +34,15 @@ class Graph:
             return True
         return False
 
-    def dfs(self):
-        ...
+    def dfs(self, index=0):
+        if self.__visited[index]:
+            return
+        self.__visited[index] = True
+        print(self.a_list[index])
+        for n in self.a_list[index].neighbors:
+            if not self.__visited[n.index]:
+                self.dfs(n.index)
+        # print(self.a_list[index])
 
     def bfs(self):
         self.q.append(self.a_list[0])
@@ -83,7 +90,8 @@ if __name__ == '__main__':
 
     for v in g.a_list:
         print(v, v.neighbors)
-    g.bfs()
+    # g.bfs()
+    g.dfs()
 
 
 

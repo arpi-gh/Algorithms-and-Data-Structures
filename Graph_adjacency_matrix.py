@@ -1,7 +1,11 @@
+from collections import deque
+
+
 class Vertex:
     def __init__(self, data):
         self.data = data
         self.neighbors = []
+        self.index = 0
 
     def __repr__(self):
         return f'{self.data}'
@@ -11,7 +15,9 @@ class Graph:
     def __init__(self):
         self.vertexes = []
         self.a_matrix = []
-        self.__visited = [False] * len(self.a_matrix)
+        self.__visited = []
+        self.q = deque()
+        self.i = 0
 
     def getSize(self):
         return len(self.a_matrix)
@@ -22,6 +28,9 @@ class Graph:
         for row in self.a_matrix:
             row.append(False)
         self.vertexes.append(vertex)
+        vertex.index = self.i
+        self.i += 1
+        self.__visited.append(False)
 
     def addEdge(self, src: int, dst: int):
         self.a_matrix[src][dst] = True
@@ -36,7 +45,16 @@ class Graph:
         ...
 
     def bfs(self):
-        ...
+        self.q.append(self.vertexes[0])
+        self.__visited[0] = True
+        while self.q:
+            ver = self.q.popleft()
+            print(ver)
+            for i in range(len(self.a_matrix)):
+                if self.a_matrix[ver.index][i]:
+                    if not self.__visited[i]:
+                        self.q.append(self.vertexes[i])
+                        self.__visited[i] = True
 
     def countLevelNodes(self):
         ...
@@ -75,3 +93,4 @@ if __name__ == '__main__':
         print(v)
     for row in g.a_matrix:
         print(row)
+    g.bfs()

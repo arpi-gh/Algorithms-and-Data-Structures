@@ -1,7 +1,11 @@
+from collections import deque
+
+
 class Vertex:
     def __init__(self, data):
         self.data = data
         self.neighbors = []
+        self.index = 0
 
     def __repr__(self):
         return f'{self.data}'
@@ -10,10 +14,16 @@ class Vertex:
 class Graph:
     def __init__(self):
         self.a_list = []
-        self.__visited = [False] * len(self.a_list)
+        self.__visited = []
+        self.q = deque()
+        self.i = 0
 
     def addVertex(self, vertex: Vertex):
         self.a_list.append(vertex)
+        vertex.index = self.i
+        self.i += 1
+        print(vertex.index)
+        self.__visited.append(False)
 
     def addEdge(self, src: int, dst: int):
         if self.a_list[dst] not in self.a_list[src].neighbors:
@@ -28,7 +38,15 @@ class Graph:
         ...
 
     def bfs(self):
-        ...
+        self.q.append(self.a_list[0])
+        self.__visited[0] = True
+        while self.q:
+            ver = self.q.popleft()
+            print(ver)
+            for n in ver.neighbors:
+                if not self.__visited[n.index]:
+                    self.q.append(n)
+                    self.__visited[n.index] = True
 
     def countLevelNodes(self):
         ...
@@ -65,6 +83,7 @@ if __name__ == '__main__':
 
     for v in g.a_list:
         print(v, v.neighbors)
+    g.bfs()
 
 
 

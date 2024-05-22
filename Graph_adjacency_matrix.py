@@ -18,6 +18,7 @@ class Graph:
         self.__visited = []
         self.q = deque()
         self.i = 0
+        self.path = None
 
     def getSize(self):
         return len(self.a_matrix)
@@ -92,8 +93,25 @@ class Graph:
                     completed = False
                     cur_level += 1
 
-    def findShortestPath(self):
-        ...
+    def __dfsPath(self, src, dst, res):
+        if self.__visited[src]:
+            return
+        res.append(self.vertexes[src])
+        self.__visited[src] = True
+        for i in range(len(self.a_matrix)):
+            if self.a_matrix[src][i]:
+                if not self.__visited[i]:
+                    self.__dfsPath(i, dst, res)
+        if src == dst:
+            if not self.path or len(res) < len(self.path):
+                self.path = res.copy()
+        self.__visited[src] = False
+        res.pop()
+        return self.path
+
+    def findShortestPath(self, source, destination):
+        result = []
+        return self.__dfsPath(source, destination, result)
 
     def transpose(self):
         ...
@@ -127,20 +145,23 @@ if __name__ == '__main__':
     g.addEdge(4, 1)
     g.addEdge(4, 2)
     g.addEdge(4, 3)
+    g.addEdge(4, 6)
     g.addEdge(4, 7)
     g.addEdge(5, 1)
     g.addEdge(5, 7)
     g.addEdge(6, 3)
-    g.addEdge(7, 5)
+    g.addEdge(6, 4)
     g.addEdge(7, 4)
+    g.addEdge(7, 5)
 
-    for v in g.vertexes:
-        print(v)
-    for row in g.a_matrix:
-        print(row)
+    # for v in g.vertexes:
+    #     print(v)
+    # for row in g.a_matrix:
+    #     print(row)
     # g.bfs()
     # g.dfs()
-    print(g.countLevelNodes(0))
-    print(g.countLevelNodes(1))
-    print(g.countLevelNodes(2))
-    print(g.countLevelNodes(3))
+    # print(g.countLevelNodes(0))
+    # print(g.countLevelNodes(1))
+    # print(g.countLevelNodes(2))
+    # print(g.countLevelNodes(3))
+    print(g.findShortestPath(0, 6))

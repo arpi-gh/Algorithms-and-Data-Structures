@@ -55,8 +55,60 @@ class Graph:
                     self.q.append(n)
                     self.__visited[n.index] = True
 
-    def countLevelNodes(self):
-        ...
+    # def countLevelNodes(self, level: int, cur_level=1):
+    #     res = []
+    #     self.q.clear()
+    #     self.__visited = [False] * len(self.__visited)
+    #     self.q.append(self.a_list[0])
+    #     self.__visited[0] = True
+    #     last_neighbor = None
+    #     completed = True
+    #     while self.q:
+    #         ver = self.q.popleft()  # 0
+    #         if ver is last_neighbor:
+    #             completed = True
+    #         for n in ver.neighbors:  # 1 2 3
+    #             if not self.__visited[n.index]:
+    #                 self.q.append(n)
+    #                 res.append(n)
+    #             self.__visited[n.index] = True
+    #             tmp = n
+    #         if completed:
+    #             last_neighbor = tmp
+    #             if cur_level == level:
+    #                 return len(res)
+    #             else:
+    #                 res = []
+    #                 completed = False
+    #                 cur_level += 1
+    #     return 0
+    def countLevelNodes(self, level):
+        if level == 0:
+            print(f'Level {level}: ')
+            return 1
+        cur_level = 1
+        self.q.clear()
+        self.__visited = [False] * len(self.a_list)
+        self.q.append(self.a_list[0])
+        self.__visited[0] = True
+        last = self.a_list[0]
+        completed = False
+        while self.q:
+            ver = self.q.popleft()
+            if ver is last:
+                completed = True
+            for n in ver.neighbors:
+                if not self.__visited[n.index]:
+                    self.q.append(n)
+                self.__visited[n.index] = True
+            if completed:
+                last = self.q[-1]
+                if cur_level == level:
+                    print(f'Level {cur_level}: ')
+                    return len(self.q)
+                else:
+                    completed = False
+                    cur_level += 1
 
     def findShortestPath(self):
         ...
@@ -75,23 +127,39 @@ if __name__ == '__main__':
     g.addVertex(Vertex(2))
     g.addVertex(Vertex(3))
     g.addVertex(Vertex(4))
+    g.addVertex(Vertex(5))
+    g.addVertex(Vertex(6))
+    g.addVertex(Vertex(7))
 
+    g.addEdge(0, 1)
     g.addEdge(0, 2)
     g.addEdge(0, 3)
-    g.addEdge(1, 3)
+    g.addEdge(1, 0)
+    g.addEdge(1, 5)
     g.addEdge(1, 4)
     g.addEdge(2, 0)
     g.addEdge(2, 4)
     g.addEdge(3, 0)
-    g.addEdge(3, 1)
-    g.addEdge(4, 0)
+    g.addEdge(3, 4)
+    g.addEdge(3, 6)
     g.addEdge(4, 1)
     g.addEdge(4, 2)
+    g.addEdge(4, 3)
+    g.addEdge(4, 7)
+    g.addEdge(5, 1)
+    g.addEdge(5, 7)
+    g.addEdge(6, 3)
+    g.addEdge(7, 5)
+    g.addEdge(7, 4)
 
     for v in g.a_list:
         print(v, v.neighbors)
     # g.bfs()
-    g.dfs()
+    # g.dfs()
+    print(g.countLevelNodes(0))
+    print(g.countLevelNodes(1))
+    print(g.countLevelNodes(2))
+    print(g.countLevelNodes(3))
 
 
 

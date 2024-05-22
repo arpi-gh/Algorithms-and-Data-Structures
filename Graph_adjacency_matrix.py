@@ -63,8 +63,34 @@ class Graph:
                         self.q.append(self.vertexes[i])
                         self.__visited[i] = True
 
-    def countLevelNodes(self):
-        ...
+    def countLevelNodes(self, level):
+        if level == 0:
+            print(f'Level {level}: ')
+            return 1
+        cur_level = 1
+        self.q.clear()
+        self.__visited = [False] * len(self.vertexes)
+        self.q.append(self.vertexes[0])
+        self.__visited[0] = True
+        last = self.vertexes[0]
+        completed = False
+        while self.q:
+            ver = self.q.popleft()
+            if ver is last:
+                completed = True
+            for i in range(len(self.a_matrix)):
+                if self.a_matrix[ver.index][i]:
+                    if not self.__visited[i]:
+                        self.q.append(self.vertexes[i])
+                    self.__visited[i] = True
+            if completed:
+                last = self.q[-1]
+                if cur_level == level:
+                    print(f'Level {cur_level}: ')
+                    return len(self.q)
+                else:
+                    completed = False
+                    cur_level += 1
 
     def findShortestPath(self):
         ...
@@ -83,22 +109,38 @@ if __name__ == '__main__':
     g.addVertex(Vertex(2))
     g.addVertex(Vertex(3))
     g.addVertex(Vertex(4))
+    g.addVertex(Vertex(5))
+    g.addVertex(Vertex(6))
+    g.addVertex(Vertex(7))
 
+    g.addEdge(0, 1)
     g.addEdge(0, 2)
     g.addEdge(0, 3)
-    g.addEdge(1, 3)
+    g.addEdge(1, 0)
+    g.addEdge(1, 5)
     g.addEdge(1, 4)
     g.addEdge(2, 0)
     g.addEdge(2, 4)
     g.addEdge(3, 0)
-    g.addEdge(3, 1)
-    g.addEdge(4, 0)
+    g.addEdge(3, 4)
+    g.addEdge(3, 6)
     g.addEdge(4, 1)
     g.addEdge(4, 2)
+    g.addEdge(4, 3)
+    g.addEdge(4, 7)
+    g.addEdge(5, 1)
+    g.addEdge(5, 7)
+    g.addEdge(6, 3)
+    g.addEdge(7, 5)
+    g.addEdge(7, 4)
 
     for v in g.vertexes:
         print(v)
     for row in g.a_matrix:
         print(row)
     # g.bfs()
-    g.dfs()
+    # g.dfs()
+    print(g.countLevelNodes(0))
+    print(g.countLevelNodes(1))
+    print(g.countLevelNodes(2))
+    print(g.countLevelNodes(3))

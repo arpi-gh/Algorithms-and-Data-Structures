@@ -18,6 +18,7 @@ class Graph:
         self.q = deque()
         self.i = 0
         self.path = None
+        self.rec_stack = []
 
     def clear_visited(self):
         for i in range(len(self.__visited)):
@@ -115,6 +116,18 @@ class Graph:
             vertex.neighbors = neighbors_list[vertex.index]
             print(vertex.neighbors)
 
+    def __hasCycle(self, i):
+        self.__visited[i] = True
+        self.rec_stack[i] = True
+        for n in self.a_list[i].neighbors:
+            if self.rec_stack[n.index] or self.__hasCycle(n.index):
+                return True
+        self.rec_stack[i] = False
+        return False
+
+    def hasCycle(self) -> bool:
+        self.rec_stack = [False] * len(self.a_list)
+        return self.__hasCycle(i=0)
 
     def __repr__(self):
         return f'{self.a_list}'
@@ -134,18 +147,19 @@ if __name__ == '__main__':
     g.addEdge(0, 3)
     g.addEdge(0, 4)
     g.addEdge(1, 2)
-    g.addEdge(2,0)
+    g.addEdge(2, 0)
     g.addEdge(3, 1)
     g.addEdge(4, 6)
     g.addEdge(5, 7)
     g.addEdge(6, 5)
 
-    print('First dfs')
-    g.dfs()
-    g.transpose()
-    print('Second dfs')
-    g.clear_visited()
-    g.dfs()
+    # print('First dfs')
+    # g.dfs()
+    # g.transpose()
+    # print('Second dfs')
+    # g.clear_visited()
+    # g.dfs()
+    print(g.hasCycle())
 
 
 

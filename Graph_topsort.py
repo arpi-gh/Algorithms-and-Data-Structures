@@ -1,4 +1,5 @@
 from Directed_graph import Graph, Vertex
+from collections import deque
 
 
 class TopSort:
@@ -27,6 +28,28 @@ class TopSort:
                     self.dfs(vertex.index)
             return self.res
         return None
+
+    def enqueue(self, queue, edges_list):
+        for i in range(len(edges_list)):
+            if edges_list[i] == 0:
+                queue.append(self.graph.a_list[i])
+                edges_list[i] -= 1
+
+    def Kahn(self):
+        q = deque()
+        edges = self.graph.size() * [0]
+        res = []
+        for vertex in self.graph.a_list:
+            for neighbor in vertex.neighbors:
+                edges[neighbor.index] += 1
+        self.enqueue(q, edges)
+        while q:
+            v = q.popleft()
+            res.append(v)
+            for n in v.neighbors:
+                edges[n.index] -= 1
+            self.enqueue(q, edges)
+        return res
 
 
 if __name__ == '__main__':
@@ -58,6 +81,7 @@ if __name__ == '__main__':
 
     sol = TopSort(g)
     print(sol.topsort())
+    print(sol.Kahn())
 
 
 

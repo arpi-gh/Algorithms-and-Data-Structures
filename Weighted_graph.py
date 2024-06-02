@@ -24,6 +24,8 @@ class Graph:
         self.final_result = float(inf)
         self.weights = 0
 
+    def getweight(self, src: Vertex, dst: Vertex):
+        return self.a_matrix[src.index][dst.index]
 
     def getSize(self):
         return len(self.a_matrix)
@@ -128,8 +130,29 @@ class Graph:
         cur_path = []
         return self.__dfsPath(source, destination, cur_path)
 
-    def transpose(self):
-        ...
+    def enqueue(self, queue, edges_list):
+        for i in range(len(edges_list)):
+            if edges_list[i] == 0:
+                queue.append(self.vertexes[i])
+                edges_list[i] -= 1
+
+    def Kahn(self):
+        q = deque()
+        edges = len(self.a_matrix) * [0]
+        res = []
+        for i in range(len(self.a_matrix)):
+            for j in range(len(self.a_matrix)):
+                if self.a_matrix[i][j] != inf:
+                    edges[j] += 1
+        self.enqueue(q, edges)
+        while q:
+            v = q.popleft()
+            res.append(v)
+            for j in range(len(self.a_matrix)):
+                if self.a_matrix[v.index][j] != inf:
+                    edges[j] -= 1
+            self.enqueue(q, edges)
+        return res
 
     def __repr__(self):
         return f'{self.a_matrix}'
@@ -160,7 +183,6 @@ if __name__ == '__main__':
     g.addEdge(5, 7, 1)
     g.addEdge(6, 7, 2)
 
-
     # for v in g.vertexes:
     #     print(v)
     # for row in g.a_matrix:
@@ -171,4 +193,5 @@ if __name__ == '__main__':
     # print(g.countLevelNodes(1))
     # print(g.countLevelNodes(2))
     # print(g.countLevelNodes(3))
-    print(g.findShortestPath(0, 7))
+    # print(g.findShortestPath(0, 7))
+    print(g.Kahn())

@@ -12,6 +12,31 @@ class Vertex:
         return f'{self.data}'
 
 
+class Edge:
+    def __init__(self, src: Vertex, dst: Vertex, cost: int or float):
+        self.src = src
+        self.dst = dst
+        self.cost = cost
+
+    def __eq__(self, other):
+        if self.cost == other.cost:
+            return True
+        return False
+
+    def __gt__(self, other):
+        if self.cost > other.cost:
+            return True
+        return False
+
+    def __lt__(self, other):
+        if self.cost < other.cost:
+            return True
+        return False
+
+    def __repr__(self):
+        return f'{self.src}->{self.dst}<{self.cost}>'
+
+
 class Graph:
     def __init__(self):
         self.vertexes = []
@@ -23,6 +48,7 @@ class Graph:
         self.path = None
         self.final_result = float(inf)
         self.weights = 0
+        self.edges = []
 
     def getweight(self, src: Vertex, dst: Vertex):
         return self.a_matrix[src.index][dst.index]
@@ -43,6 +69,7 @@ class Graph:
     def addEdge(self, src: int, dst: int, weight=0):
         self.a_matrix[src][dst] = weight
         self.weights += weight
+        self.edges.append(Edge(self.vertexes[src], self.vertexes[dst], weight))
 
     def checkEdge(self, src: int, dst: int):
         if self.a_matrix[src][dst]:
@@ -195,3 +222,7 @@ if __name__ == '__main__':
     # print(g.countLevelNodes(3))
     # print(g.findShortestPath(0, 7))
     print(g.Kahn())
+    print(g.edges)
+    g.edges.sort()
+    print(g.edges)
+

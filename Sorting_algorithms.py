@@ -1,3 +1,5 @@
+import time
+
 class Sort:
     @staticmethod
     def bubble_sort(array):
@@ -8,6 +10,18 @@ class Sort:
         return array
     # Time Complexity
     # (n-1)(n-1) + n-1 + n-1 = n^2 - 2n + 1 + 2n - 2 = n^2 - 1 ???
+
+    @staticmethod
+    def optimized_bubble(array):
+        for i in range(len(array), -1, -1):
+            swapped = False
+            for j in range(i-1):
+                if array[j] > array[j+1]:
+                    array[j], array[j+1] = array[j+1], array[j]
+                    swapped = True
+            if not swapped:
+                break
+        return array
 
     @staticmethod
     def selection_sort(array):
@@ -33,6 +47,18 @@ class Sort:
                 i = j
                 j -= 1
         return array
+
+    @staticmethod
+    def insertion_sort_optimized(array):
+        for i in range(1, len(array)):
+            key = array[i]
+            j = i-1
+            while j >=  0 and array[j] > key:
+                array[j+1] = array[j]
+                j -= 1
+            array[j+1] = key
+        return array
+
     @staticmethod
     def merge(left, right):
         left.extend(right)
@@ -75,11 +101,73 @@ class Sort:
                 break
         return sorted_nums
 
+    @staticmethod
+    def quick_sort(nums, start=0, end=None):
+        def partition(nums, start, end):
+            left = start
+            right = end
+            pivot_index = (start+end) // 2
+            pivot = nums[pivot_index]
+            nums[pivot_index], nums[end] = nums[end], nums[pivot_index]
+            while left < right:
+                if nums[left] > pivot:
+                    while right > left:
+                        if nums[right] < pivot:
+                            nums[left], nums[right] = nums[right], nums[left]
+                            break
+                        right -= 1
+                        if left == right:
+                            nums[left], nums[end] = nums[end], nums[left]
+                            break
+                left += 1
+                if left == right:
+                    nums[left], nums[end] = nums[end], nums[left]
+            return left
+
+        if end is None:
+            end = len(nums) - 1
+        if end-start == 1 and nums[start] > nums[end]:
+            nums[start], nums[end] = nums[end], nums[end]
+        if end > start:
+            index = partition(nums, start, end)
+            Sort().quick_sort(nums, start, index-1)
+            Sort().quick_sort(nums, index+1, end)
+        return nums
+
 
 if __name__ == '__main__':
     sort = Sort()
     ls = [1, 4, 6, 2, -1, 8, 7, -2]
-    print('Bubble:', sort.bubble_sort(ls))
-    print('Selection:', sort.selection_sort(ls))
-    print('Insertion:', sort.insertion_sort(ls))
-    print('Merge:', sort.merge_sort(ls))
+    ls1 = [4, 6, 8, 1, 2, 4, 3, -4, ]
+
+    # start_time = time.time()
+    # print('Bubble:', sort.bubble_sort(ls))
+    # end_time = time.time()
+    # print(end_time-start_time)
+    #
+    # start_time = time.time()
+    # print('Optimized bubble:', sort.optimized_bubble(ls))
+    # end_time = time.time()
+    # print(end_time - start_time)
+    #
+    # start_time = time.time()
+    # print('Selection:', sort.selection_sort(ls))
+    # end_time = time.time()
+    # print(end_time - start_time)
+    #
+    # start_time = time.time()
+    # print('Insertion:', sort.insertion_sort(ls))
+    # end_time = time.time()
+    # print(end_time - start_time)
+    #
+    # start_time = time.time()
+    # print('Insertion new:', sort.insertion_sort_optimized(ls))
+    # end_time = time.time()
+    # print(end_time - start_time)
+    #
+    # start_time = time.time()
+    # print('Merge:', sort.merge_sort(ls))
+    # end_time = time.time()
+    # print(end_time - start_time)
+
+    print(sort.quick_sort(ls))

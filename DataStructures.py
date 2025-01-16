@@ -22,8 +22,7 @@ class SLL:
         self.__head = None
         self.__size = 0
         self.__tail = None
-        if array:
-            self.__head = self.__create(array)
+        self.__head = self.__create(array)
 
     @property
     def head(self):
@@ -34,14 +33,15 @@ class SLL:
         return self.__size
 
     def __create(self, array: list[int]):
-        head = prev = SLListNode(array[0])
-        self.__size = 1
-        for i in range(1, len(array)):
-            node = SLListNode(array[i])
-            prev.next = node
-            prev = node
-            self.__size += 1
-        self.__tail = prev
+        if array:
+            head = prev = SLListNode(array[0])
+            self.__size = 1
+            for i in range(1, len(array)):
+                node = SLListNode(array[i])
+                prev.next = node
+                prev = node
+                self.__size += 1
+            self.__tail = prev
         return head
 
     def append(self, value: int):
@@ -75,10 +75,12 @@ class SLL:
                     prev.next = current.next
                     if not prev.next:
                         self.__tail = prev
-                    break
+                    self.__size -= 1
+                    return
                 prev = current
                 current = current.next
-        self.__size -= 1
+        raise ValueError('Value not in list')
+
 
     def pop(self, index=None):
         popped = None
@@ -123,8 +125,7 @@ class DLL:
         self.__head = None
         self.__tail = None
         self.__size = 0
-        if array:
-            self.__head = self.__create(array)
+        self.__head = self.__create(array)
 
     @property
     def head(self):
@@ -139,15 +140,16 @@ class DLL:
         return self.__size
 
     def __create(self, array: list[int]):
-        head = prev = DLListNode(array[0])
-        self.__size = 1
-        for i in range(1, len(array)):
-            node = DLListNode(array[i])
-            prev.next = node
-            node.prev = prev
-            prev = node
-            self.__size += 1
-        self.__tail = prev
+        if array:
+            head = prev = DLListNode(array[0])
+            self.__size = 1
+            for i in range(1, len(array)):
+                node = DLListNode(array[i])
+                prev.next = node
+                node.prev = prev
+                prev = node
+                self.__size += 1
+            self.__tail = prev
         return head
 
     def append(self, value: int):
